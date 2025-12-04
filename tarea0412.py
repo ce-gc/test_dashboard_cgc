@@ -60,14 +60,14 @@ st.divider()
 
 #VISUALIZACIÓN EJ 2
 
-st.text("1. Gráfica de barras, para saber el número de pedidos que tienen la fecha a null, y cuales la tienen bien.")
-st.subheader("Pedidos con/sin fecha null")
+st.text("2. Cantidades totales vendidas en cada día del último mes disponible de datos.")
+st.subheader("Total vendido diariamente en el último mes")
 st.subheader("Código Consulta 2")
 st.divider()
 
 #VISUALIZACIÓN EJ 3
 
-st.text("1. Gráfica de barras, para saber el número de pedidos que tienen la fecha a null, y cuales la tienen bien.")
-st.subheader("Pedidos con/sin fecha null")
-st.subheader("Código Consulta 2")
+st.text("3. Diferentes categorías de productos que se vendieron desde que tenemos histórico de datos (incluyendo fechas nulas)")
+st.subheader("Todas las categorías de datos vendidas")
+st.subheader("Código Consulta 3")
 st.divider()
