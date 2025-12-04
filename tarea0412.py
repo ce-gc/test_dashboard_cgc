@@ -1,10 +1,13 @@
-#Importar librerías
+#IMPORTAR DEPENDENCIAS
 import streamlit as st
 import sqlite3
 import pandas as pd
 
-#Conexión a la base de datos
+#CONEXIÓN A LA BASE DE DATOS
+
 conn = sqlite3.connect("test.db")
+
+#QUERYS Y DATAFRAMES EJ 1: número de pedidos que tienen la fecha a null, y cuales la tienen bien.
 
 query_sin_fecha = """select 
     count(*) as Pedidos_Sin_Fecha
@@ -28,7 +31,19 @@ df_grafico_fechas = pd.DataFrame({
     ]
 })
 
+#QUERYS Y DATAFRAMES EJ 2: cantidades totales vendidas en cada día del último mes disponible de datos.
+
+
+
+#QUERYS Y DATAFRAMES EJ 3: diferentes categorías de productos que se vendieron desde que tenemos histórico de datos (incluyendo fechas nulas)
+
+
+#VISUALIZACIÓN DE DATOS
+
 st.title("Celia Gómez Campelo")
+
+#VISUALIZACIÓN EJ 1
+
 st.text("1. Gráfica de barras, para saber el número de pedidos que tienen la fecha a null, y cuales la tienen bien.")
 st.subheader("Pedidos con/sin fecha null")
 st.bar_chart(df_grafico_fechas.set_index('Estado'))
@@ -38,7 +53,21 @@ with col1:
 with col2:
     st.metric("Pedidos con fecha", df_con_fecha['Pedidos_Con_Fecha'][0])
 
-st.subheader("Código consulta 1")
+st.subheader("Código Consulta 1")
 st.text(query_sin_fecha)
 st.text(query_con_fecha)
+st.divider()
+
+#VISUALIZACIÓN EJ 2
+
+st.text("1. Gráfica de barras, para saber el número de pedidos que tienen la fecha a null, y cuales la tienen bien.")
+st.subheader("Pedidos con/sin fecha null")
+st.subheader("Código Consulta 2")
+st.divider()
+
+#VISUALIZACIÓN EJ 3
+
+st.text("1. Gráfica de barras, para saber el número de pedidos que tienen la fecha a null, y cuales la tienen bien.")
+st.subheader("Pedidos con/sin fecha null")
+st.subheader("Código Consulta 2")
 st.divider()
