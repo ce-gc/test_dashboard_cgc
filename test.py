@@ -17,16 +17,21 @@ df = pd.read_sql_query(query, conn)
 
 st.title("Unidades Totales Vendidas")
 
+df = df.sort_values("Suma", ascending=False)
 df = df.set_index("Producto")
-df = df.sort_values("Suma",ascending=False)
+df.index = pd.CategoricalIndex(
+    df.index, 
+    categories=df.index.tolist(), 
+    ordered=True
+)
 
 st.bar_chart(df["Suma"])
 st.divider()
 st.header("Tabla completa de datos")
 #st.subheader()
-st.dataframe(df)
-#st.subheader()
+st.dataframe(df["Suma"])
 st.divider()
+st.subheader("Código de consulta")
 st.text(query)
 
 #print(df)
