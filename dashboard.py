@@ -2,6 +2,7 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import matplotlib.pyplot as plt
 
 #CONEXIÓN A LA BASE DE DATOS
 
@@ -49,11 +50,21 @@ df_total_mes = pd.read_sql_query(query_total_mes, conn)
 df_total_mes['dia'] = pd.to_datetime(df_total_mes['dia'])
 
 #QUERYS Y DATAFRAMES EJ 3: diferentes categorías de productos que se vendieron desde que tenemos histórico de datos (incluyendo fechas nulas)
+query_categorias = """
+select
+    pu.category AS categoria,
+    sum(su.quantity) as total_vendido
+from sales_uuid su
+join  products_uuid pu on su.product_id = pu.product_id
+group by pu.category
+order by total_vendido desc;
+"""
 
+df_categorias = pd.read_sql_query(query_categorias, conn)
 
 #VISUALIZACIÓN DE DATOS
 
-st.title("Celia Gómez Campelo")
+st.title("Dashboard - Celia Gómez Campelo")
 
 #VISUALIZACIÓN EJ 1
 
@@ -91,8 +102,26 @@ st.text(query_total_mes)
 st.divider()
 
 #VISUALIZACIÓN EJ 3
-
 st.text("3. Diferentes categorías de productos que se vendieron desde que tenemos histórico de datos (incluyendo fechas nulas)")
 st.subheader("Todas las categorías de datos vendidas")
+fig, ax = plt.subplots(figsize=(10, 8))
+ax.pie(
+    df_categorias['total_vendido'], 
+    labels=df_categorias['categoria'],
+    autopct='%1.1f%%',
+    startangle=90,
+    colors=plt.cm.Set3.colors
+)
+ax.axis('equal')
+
+st.pyplot(fig)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.metric("Total Categorías", len(df_categorias))
+with col2:
+    st.metric("Total Vendido", f"{df_categorias['total_vendido'].sum():,.0f}")
+
 st.subheader("Código Consulta 3")
+st.text(query_categorias)
 st.divider()
