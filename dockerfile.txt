@@ -1,0 +1,5 @@
+from python:3.11-slim
+run pip install streamlit
+copy . .
+expose 8501
+cmd ["streamlit","run","test.py","--server.address=0.0.0.0"]
