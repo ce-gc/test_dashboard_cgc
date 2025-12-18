@@ -32,8 +32,21 @@ df_grafico_fechas = pd.DataFrame({
 })
 
 #QUERYS Y DATAFRAMES EJ 2: cantidades totales vendidas en cada día del último mes disponible de datos.
-
-
+query_total_mes = """
+select
+    date(su.transaction_date) as dia,
+    sum(su.quantity) as total_vendido
+from sales_uuid su
+where strftime('%Y-%m', su.transaction_date) = (
+    select strftime('%Y-%m', max(transaction_date))
+    from sales_uuid
+    where transaction_date is not null
+)
+group by date(su.transaction_date)
+order by dia;
+"""
+df_total_mes = pd.read_sql_query(query_total_mes, conn)
+df_total_mes['dia'] = pd.to_datetime(df_total_mes['dia'])
 
 #QUERYS Y DATAFRAMES EJ 3: diferentes categorías de productos que se vendieron desde que tenemos histórico de datos (incluyendo fechas nulas)
 
@@ -62,7 +75,19 @@ st.divider()
 
 st.text("2. Cantidades totales vendidas en cada día del último mes disponible de datos.")
 st.subheader("Total vendido diariamente en el último mes")
+st.bar_chart(df_total_mes.set_index('dia')['total_vendido'])
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric("Total Vendido", f"{df_total_mes['total_vendido'].sum():,.0f}")
+with col2:
+    st.metric("Promedio Diario", f"{df_total_mes['total_vendido'].mean():,.1f}")
+with col3:
+    max_dia = df_total_mes.loc[df_total_mes['total_vendido'].idxmax(), 'dia']
+    st.metric("Día con Más Ventas", max_dia.strftime('%d/%m'))
+
 st.subheader("Código Consulta 2")
+st.text(query_total_mes)
 st.divider()
 
 #VISUALIZACIÓN EJ 3
